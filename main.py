@@ -27,13 +27,19 @@ def sort_mount_point():
         time.sleep(0.2)
 
 def is_mounted():
-    mnts = subprocess.check_output(["mount"]).decode("UTF-8")
-    if mount_point in mnts:
-        return True
-    return
+    try:
+        mnts = subprocess.check_output(['mount']).decode("UTF-8")
+        if mount_point in mnts:
+            return True
+        return
+    except Exception as e:
+        print(e)
 
 def connect():
-    os.system("mount_smbfs //{}:{}@{}/{} {}".format(username, password, server, share, mount_point))
+    try:
+        os.system("mount_smbfs //{}:{}@{}/{} {}".format(username, password, server, share, mount_point))
+    except Exception as e:
+        print(e)
 
 def run():
     while True:
@@ -47,8 +53,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
-
-
-
-# /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | grep -w SSID | awk '{print $2}'
